@@ -33,3 +33,40 @@ def hello_view(
         context={"name": "Temirbolat", "names": []},
         status=200
     )
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from datetime import datetime
+import pytz
+
+counter_value = 0  # простая переменная для счётчика
+
+def welcome(request):
+    return render(request, 'welcome.html')
+
+def users(request):
+    users_list = [
+        {"full_name": "Yeva Davydova", "age": 21},
+        {"full_name": "Zemfira Ramazanove", "age": 49},
+        {"full_name": "John Doe", "age": 100},
+    ]
+    return render(request, 'users.html', {"users": users_list})
+
+def city_time(request):
+    city = request.GET.get("city", "UTC")
+    tz = pytz.timezone({
+        "Almaty": "Asia/Almaty",
+        "Calgary": "America/Edmonton",
+        "Moscow": "Europe/Moscow",
+        "UTC": "UTC",
+    }.get(city, "UTC"))
+    current_time = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+    return render(request, "city_time.html", {"city": city, "time": current_time})
+
+def counter(request):
+    global counter_value
+    if "reset" in request.GET:
+        counter_value = 0
+    elif "add" in request.GET:
+        counter_value += 1
+    return render(request, "counter.html", {"counter": counter_value})
