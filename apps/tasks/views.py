@@ -4,7 +4,10 @@ from typing import Any
 # Django modules
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
+from datetime import datetime
+import pytz
 
+counter_value = 0  # простая переменная для счётчика
 
 def hello_view(
     request: HttpRequest,
@@ -33,13 +36,6 @@ def hello_view(
         context={"name": "Temirbolat", "names": []},
         status=200
     )
-
-from django.shortcuts import render
-from django.http import HttpResponse
-from datetime import datetime
-import pytz
-
-counter_value = 0  # простая переменная для счётчика
 
 def welcome(request):
     return render(request, 'welcome.html')
