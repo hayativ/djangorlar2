@@ -3,10 +3,13 @@
 import os
 import sys
 
+from settings.conf import ENV_ID, ENV_POSSIBLE_OPTIONS
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.base')
+    assert ENV_ID in ENV_POSSIBLE_OPTIONS, f"Invalid env id. Possible options: {ENV_POSSIBLE_OPTIONS}"
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'settings.env.{ENV_ID}')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -15,6 +18,7 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
     execute_from_command_line(sys.argv)
 
 
