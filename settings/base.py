@@ -3,7 +3,7 @@ import os
 
 # Project modules
 from settings.conf import *  # noqa: F403
-
+from decouple import config
 
 # ----------------------------------------------
 # Path
@@ -26,7 +26,10 @@ DJANGO_AND_THIRD_PARTY_APPS = [
 ]
 PROJECT_APPS = [
     "apps.tasks.apps.TasksConfig",
+    "apps.catalogs.apps.CatalogsConfig",
+    "apps.commerces.apps.CommercesConfig",
 ]
+
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECT_APPS
 
 # ----------------------------------------------
@@ -70,6 +73,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+DATABASES = {
+    'default': {
+        'ENGINE': config('DB_ENGINE', default='django.db.backends.sqlite3'),
+        'NAME': config('DB_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': config('DB_USER', default=''),
+        'PASSWORD': config('DB_PASSWORD', default=''),
+        'HOST': config('DB_HOST', default=''),
+        'PORT': config('DB_PORT', default=''),
+    }
+}
 
 # ----------------------------------------------
 # Internationalization
