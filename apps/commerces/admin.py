@@ -1,5 +1,5 @@
 #Django modules
-from django.contrib import 
+from django.contrib import admin
 
 #Project modules
 from .models import (
