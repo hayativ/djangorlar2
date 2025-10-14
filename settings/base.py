@@ -28,6 +28,7 @@ PROJECT_APPS = [
     "apps.tasks.apps.TasksConfig",
     "apps.catalogs.apps.CatalogsConfig",
     "apps.commerces.apps.CommercesConfig",
+    "apps.abstracts.apps.AbstractsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECT_APPS
