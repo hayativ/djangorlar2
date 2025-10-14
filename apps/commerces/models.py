@@ -1,6 +1,4 @@
-# Django modules
 from django.db.models import (
-    Model,
     CharField,
     ForeignKey,
     DecimalField,
@@ -13,48 +11,40 @@ from django.db.models import (
 )
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
+from decimal import Decimal
 
-# Project modules
+from apps.abstracts.models import AbstractSoftDeletableModel
 from apps.catalogs.models import Restaurant, MenuItem
 
 User = get_user_model()
 
 
-class Address(Model):
+class Address(AbstractSoftDeletableModel):
     """
-    Address database (table) model.
+    Address database model.
     """
 
-    user = ForeignKey(
-        to=User,
-        on_delete=CASCADE,
-        related_name="addresses",
-    )
+    user = ForeignKey(to=User, on_delete=CASCADE, related_name="addresses")
     street = CharField(max_length=255)
     city = CharField(max_length=100)
     postal_code = CharField(max_length=20)
     country = CharField(max_length=100)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
-    deleted_at = DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.street}, {self.city}"
 
 
-class PromoCode(Model):
+class PromoCode(AbstractSoftDeletableModel):
     """
-    PromoCode database (table) model.
+    PromoCode database model.
     """
 
     CODE_MAX_LEN = 50
 
     code = CharField(max_length=CODE_MAX_LEN, unique=True)
-    discount_percent = DecimalField(
-        max_digits=5,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-    )
+    discount_percent = DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0)])
     is_active = BooleanField(default=True)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
@@ -63,9 +53,9 @@ class PromoCode(Model):
         return self.code
 
 
-class Order(Model):
+class Order(AbstractSoftDeletableModel):
     """
-    Order database (table) model.
+    Order database model.
     """
 
     STATUS_NEW = 1
@@ -80,44 +70,13 @@ class Order(Model):
         STATUS_DONE: "Done",
     }
 
-    user = ForeignKey(
-        to=User,
-        on_delete=CASCADE,
-        related_name="orders",
-    )
-    restaurant = ForeignKey(
-        to=Restaurant,
-        on_delete=CASCADE,
-        related_name="orders",
-    )
-    address = ForeignKey(
-        to=Address,
-        on_delete=SET_NULL,
-        null=True,
-        related_name="orders",
-    )
-    status = PositiveIntegerField(
-        default=STATUS_NEW,
-        choices=STATUS_CHOICES,
-    )
-    subtotal = DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        validators=[MinValueValidator(0)],
-    )
-    discount_total = DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        validators=[MinValueValidator(0)],
-    )
-    total = DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        validators=[MinValueValidator(0)],
-    )
+    user = ForeignKey(to=User, on_delete=CASCADE, related_name="orders")
+    restaurant = ForeignKey(to=Restaurant, on_delete=CASCADE, related_name="orders")
+    address = ForeignKey(to=Address, on_delete=SET_NULL, null=True, related_name="orders")
+    status = PositiveIntegerField(default=STATUS_NEW, choices=STATUS_CHOICES)
+    subtotal = DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"), validators=[MinValueValidator(0)])
+    discount_total = DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"), validators=[MinValueValidator(0)])
+    total = DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"), validators=[MinValueValidator(0)])
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 
@@ -125,9 +84,9 @@ class Order(Model):
         return f"Order #{self.pk} — {self.user}"
 
 
-class OrderItem(Model):
+class OrderItem(AbstractSoftDeletableModel):
     """
-    OrderItem database (table) model.
+    OrderItem snapshot.
     """
 
     order = ForeignKey(to=Order, on_delete=CASCADE, related_name="items")
@@ -143,44 +102,31 @@ class OrderItem(Model):
         return f"{self.item_name} x{self.quantity}"
 
 
-class OrderItemOption(Model):
+class OrderItemOption(AbstractSoftDeletableModel):
     """
-    OrderItemOption database (table) model.
+    OrderItemOption snapshot.
     """
 
     order_item = ForeignKey(to=OrderItem, on_delete=CASCADE, related_name="options")
     option_name = CharField(max_length=100)
-    price_delta = DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        default=0,
-        validators=[MinValueValidator(0)],
-    )
+    price_delta = DecimalField(max_digits=8, decimal_places=2, default=0, validators=[MinValueValidator(0)])
 
     def __str__(self):
         return f"{self.option_name} (+{self.price_delta})"
 
 
-class OrderPromo(Model):
+class OrderPromo(AbstractSoftDeletableModel):
     """
-    Through-table between Order and PromoCode.
+    Through table between Order and PromoCode.
     """
 
     order = ForeignKey(to=Order, on_delete=CASCADE)
     promo = ForeignKey(to=PromoCode, on_delete=CASCADE)
-    applied_amount = DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0,
-        validators=[MinValueValidator(0)],
-    )
+    applied_amount = DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"), validators=[MinValueValidator(0)])
 
     class Meta:
         constraints = [
-            UniqueConstraint(
-                fields=["order", "promo"],
-                name="unique_order_promo",
-            ),
+            UniqueConstraint(fields=["order", "promo"], name="unique_order_promo"),
         ]
 
     def __str__(self):
