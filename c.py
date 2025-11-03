@@ -39,7 +39,7 @@ def parse_cli():
         "--n",
         type=int,
         default=50,
-        help="Generate primes up to this num"
+        help="Help: message: Generate primes up to this number"
     )
     return parser.parse_args()
 
