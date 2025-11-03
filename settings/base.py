@@ -29,9 +29,13 @@ PROJECT_APPS = [
     "apps.catalogs.apps.CatalogsConfig",
     "apps.commerces.apps.CommercesConfig",
     "apps.abstracts.apps.AbstractsConfig",
+    "apps.abstracts.apps.CustomuserConfig",
 ]
 
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECT_APPS
+
+AUTH_USER_MODEL = "cusstomuser.CustomUser"
+#AUTH_USER_MODEL = "customuser.AdvanceUser"
 
 # ----------------------------------------------
 # Middleware | Templates | Validators
