@@ -46,14 +46,14 @@ def reverse_string(text: str) -> str:
     return "".join(reversed_chars)
 
 def main():
-    arr = [5, 2, 1, 1, 5, 6]
+    arr = [5, 3, 9, 1, 5, 6]
     print("Sorted:", bubble_sort(arr.copy()))
     print("Factorial 5:", factorial(5))
 
-    stats = Statistics([1, 2, 3, 4, 5, 88])
+    stats = Statistics([1, 2, 3, 4, 5, 90])
     print("Stats:", stats.describe())
 
-    print("Reverse:", reverse_string("Hello World and bye"))
+    print("Reverse:", reverse_string("Hello World!"))
 
 if __name__ == "__main__":
     main()
