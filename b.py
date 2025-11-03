@@ -51,9 +51,9 @@ class PersonManager:
 
 def demo():
     manager = PersonManager()
-    p1 = Person("Alice", 30, "London", ["python"])
+    p1 = Person("Mickle", 30, "London", ["python"])
     p2 = Person("Bob", 25, "Berlin", ["docker", "git"])
-    p3 = Person("Charlie", 40, "London", ["kubernetes"])
+    p3 = Person("Charlie", 13, "London", ["kubernetes"])
 
     manager.add_person(p1)
     manager.add_person(p2)
