@@ -1,1 +1,0 @@
-# djangorlar2
