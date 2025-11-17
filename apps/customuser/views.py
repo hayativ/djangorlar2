@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
-from .models import CustomUser, AdvancedUser
-from .serializers import CustomUserSerializer, AdvancedUserSerializer
+from .models import CustomUser
+from .serializers import CustomUserSerializer
 
 
 class CustomUserViewSet(viewsets.ModelViewSet):
@@ -9,7 +9,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
 
 
-class AdvancedUserViewSet(viewsets.ModelViewSet):
-    queryset = AdvancedUser.objects.all()
-    serializer_class = AdvancedUserSerializer
-    permission_classes = [permissions.IsAdminUser]
+# class AdvancedUserViewSet(viewsets.ModelViewSet):
+#     queryset = AdvancedUser.objects.all()
+#     serializer_class = AdvancedUserSerializer
+#     permission_classes = [permissions.IsAdminUser]

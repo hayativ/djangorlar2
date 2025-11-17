@@ -4,3 +4,4 @@ python-decouple==3.8
 sqlparse==0.5.3
 pytz==2025.1
 djangorestframework==3.16.1
+Faker==23.3.0

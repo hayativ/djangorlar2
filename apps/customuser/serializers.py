@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, AdvancedUser
+from .models import CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -12,11 +12,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
 
-class AdvancedUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AdvancedUser
-        fields = (
-            "id", "email", "first_name", "last_name",
-            "is_active", "date_joined",
-        )
-        read_only_fields = ("id", "date_joined")
+# class AdvancedUserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = AdvancedUser
+#         fields = (
+#             "id", "email", "first_name", "last_name",
+#             "is_active", "date_joined",
+#         )
+#         read_only_fields = ("id", "date_joined")

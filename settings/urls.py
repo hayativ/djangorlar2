@@ -6,11 +6,11 @@ from rest_framework import routers
 
 from apps.tasks import views
 from apps.tasks.views import hello_view
-from apps.customuser.views import CustomUserViewSet, AdvancedUserViewSet
+from apps.customuser.views import CustomUserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', CustomUserViewSet, basename='customuser')
-router.register(r'advanced-users', AdvancedUserViewSet, basename='advanceduser')
+# router.register(r'advanced-users', AdvancedUserViewSet, basename='advanceduser')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
